@@ -1,3 +1,4 @@
+import 'package:amazon_clone/models/productinfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final searchController = TextEditingController();
-
+  final List<ProductDetails> items = ProductDetails.getProducts();
   late String value;
 
   @override
@@ -49,39 +50,56 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget shoppingItem(String image, String title, String offerPrice,
-      String discount, String actualPrice) {
-    return GestureDetector(
-      onTap: () => context.go('/info'),
+  Widget shoppingItem(ProductDetails item) {
+    return InkWell(
+      onTap: () {
+        context.push('/info');
+      },
       child: Container(
-        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
+        padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5, top: 8),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(8)),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Image.network(
-                image,
-                height: 180,
-                width: 180,
-                scale: 1.5,
-              ),
+              item.image == ""
+                  ? Container(
+                      height: 180,
+                      width: 180,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.grey[100],
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.image,
+                          color: Colors.grey[700],
+                          size: 24,
+                        ),
+                      ),
+                    )
+                  : Image.network(
+                      item.image,
+                      height: 180,
+                      width: 180,
+                      scale: 1.5,
+                    ),
               const SizedBox(
-                height: 3,
+                height: 6,
               ),
               Text(
-                title,
+                item.name,
                 style: const TextStyle(
                     fontSize: 15,
-                    color: Color(0xff2c2c2c),
+                    color: Color.fromARGB(255, 71, 71, 71),
                     fontWeight: FontWeight.w500),
               ),
               const SizedBox(
                 height: 3,
               ),
               Text(
-                '\$ $offerPrice',
+                '\$ ${item.discountPrice}',
                 style: const TextStyle(
                     color: Color(0xFF2c2c2c),
                     fontSize: 18,
@@ -93,12 +111,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                   Text(
-                    '\$ $actualPrice',
+                    '\$ ${item.actualPrice}',
                     style:
                         const TextStyle(decoration: TextDecoration.lineThrough),
                   ),
                   Text(
-                    '  $discount% off',
+                    '  ${item.discount}% off',
                     style: const TextStyle(
                         color: Colors.green, fontWeight: FontWeight.w500),
                   ),
@@ -187,14 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisSpacing: 15,
                   shrinkWrap: true,
                   children: List.generate(
-                      10,
-                      (index) => shoppingItem(
-                            'https://img.giznext.com/assets/model/2/11245/apple-iphone-13-86392669469042bb60d485f764c68d.jpg',
-                            'iPhone 13 Green, 256 GB',
-                            '1000',
-                            '30',
-                            '1300',
-                          )),
+                      items.length, (index) => shoppingItem(items[index])),
                 ),
               )
             ]),

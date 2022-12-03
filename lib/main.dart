@@ -10,15 +10,14 @@ void main(List<String> args) {
 final GoRouter routes = GoRouter(
   routes: <RouteBase>[
     GoRoute(
-      path: '/',
-      builder: (context, state) => const HomeScreen(),
-      routes: <GoRoute>[
-        GoRoute(
-          path: 'info',
-          builder: (context, state) => const ProductInfo(),
-        )
-      ],
-    ),
+        path: '/',
+        builder: (context, state) => const HomeScreen(),
+        routes: [
+          GoRoute(
+            path: 'info',
+            builder: (context, state) => const ProductInfo(),
+          )
+        ]),
   ],
 );
 
