@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Image.network(
           image,
           height: 55,
-          width: 45,
+          width: 55,
           fit: BoxFit.cover,
           loadingBuilder: (BuildContext context, Widget child,
               ImageChunkEvent? loadingProgress) {
@@ -50,6 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget imageLoading() {
+    return Container(
+      height: 180,
+      width: 180,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.grey[100],
+      ),
+      child: Center(
+        child: Icon(Icons.image, color: Colors.grey[700], size: 35),
+      ),
+    );
+  }
+
   Widget shoppingItem(ProductDetails item) {
     return InkWell(
       onTap: () {
@@ -64,26 +78,19 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.max,
             children: [
               item.image == ""
-                  ? Container(
-                      height: 180,
-                      width: 180,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey[100],
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.image,
-                          color: Colors.grey[700],
-                          size: 24,
-                        ),
-                      ),
-                    )
+                  ? imageLoading()
                   : Image.network(
                       item.image,
                       height: 180,
                       width: 180,
                       scale: 1.5,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return imageLoading();
+                      },
                     ),
               const SizedBox(
                 height: 6,
@@ -136,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: appBar(),
       body: Container(
         // alignment: Alignment.center,
-        color: const Color(0xFFEfEfEf),
+        color: const Color.fromARGB(255, 247, 247, 247),
         child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -166,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     GestureDetector(
                       onTap: () => context.go('/info'),
                       child: categoryItem(
-                          'https://www.pngitem.com/pimgs/m/136-1369939_transparent-blue-aesthetic-png-blue-aesthetic-clothes-transparent.png',
+                          'https://pngimg.com/uploads/hoodie/small/hoodie_PNG30.png',
                           'Clothes'),
                     ),
                     categoryItem(
@@ -176,10 +183,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         'https://www.pngall.com/wp-content/uploads/12/Makeup-PNG-Photos.png',
                         'Make-up'),
                     categoryItem(
-                        'https://www.kindpng.com/picc/m/368-3688261_recliner-png-free-download-leather-massage-armchair-transparent.png',
+                        'https://www.pngall.com/wp-content/uploads/2017/03/Recliner-PNG.png',
                         'Sofa'),
                     categoryItem(
-                        'https://www.pngitem.com/pimgs/m/231-2313835_red-beats-studio-3-wireless-red-hd-png.png',
+                        'https://pngimg.com/uploads/headphones/headphones_PNG7645.png',
                         'Electronics'),
                   ],
                 ),

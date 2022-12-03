@@ -40,9 +40,10 @@ class ProductInfo extends StatelessWidget {
                   return child;
                 }
                 return Container(
-                    color: Colors.white,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                    ),
                     height: 400,
                     width: 400,
                     child: Center(
