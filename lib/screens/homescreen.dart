@@ -202,6 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   textAlign: TextAlign.start,
                 ),
               ),
+              // All Products list
               Expanded(
                 child: GridView.count(
                   padding:
