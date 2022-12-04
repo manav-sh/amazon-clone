@@ -23,30 +23,49 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget categoryItem(String image, String title) {
     // Component for horizontal listview category
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Image.network(
-          image,
-          height: 55,
-          width: 55,
-          fit: BoxFit.cover,
-          loadingBuilder: (BuildContext context, Widget child,
-              ImageChunkEvent? loadingProgress) {
-            if (loadingProgress == null) {
-              return child;
-            }
-            return const SizedBox(
-                height: 55,
-                width: 45,
-                child: SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: Center(child: CircularProgressIndicator())));
-          },
-        ),
-        Text(title),
-      ]),
+    return InkWell(
+      onTap: () {
+        context.push('/info');
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+            foregroundDecoration: const BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0, 0.75, 0.94],
+              colors: [
+                Color.fromARGB(0, 247, 247, 247),
+                Color.fromARGB(0, 247, 247, 247),
+                // Color.fromARGB(150, 247, 247, 247),
+                Color.fromARGB(255, 247, 247, 247)
+              ],
+            )),
+            child: Image.network(
+              image,
+              height: 55,
+              width: 55,
+              fit: BoxFit.cover,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return const SizedBox(
+                    height: 55,
+                    width: 45,
+                    child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Center(child: CircularProgressIndicator())));
+              },
+            ),
+          ),
+          Text(title),
+        ]),
+      ),
     );
   }
 
@@ -118,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                   Text(
-                    '\$ ${item.actualPrice}',
+                    '\$${item.actualPrice}',
                     style:
                         const TextStyle(decoration: TextDecoration.lineThrough),
                   ),
@@ -144,38 +163,35 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         // alignment: Alignment.center,
         color: const Color.fromARGB(255, 247, 247, 247),
-        child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                //Deliver to manav container
-                color: const Color.fromARGB(255, 67, 222, 228),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                child: Row(
-                  children: const [
-                    Icon(Icons.pin_drop),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Deliver to Manav - Ahmedabad, Gujarat')
-                  ],
+        child: CustomScrollView(
+            // mainAxisSize: MainAxisSize.max,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            slivers: [
+              SliverToBoxAdapter(
+                child: Container(
+                  //Deliver to manav container
+                  color: const Color.fromARGB(255, 67, 222, 228),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.pin_drop),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('Deliver to Manav - Ahmedabad, Gujarat')
+                    ],
+                  ),
                 ),
               ),
-              Container(
-                //Categories horizontal listview container
-                height: 100,
-                alignment: Alignment.centerLeft,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    GestureDetector(
-                      onTap: () => context.go('/info'),
-                      child: categoryItem(
-                          'https://pngimg.com/uploads/hoodie/small/hoodie_PNG30.png',
-                          'Clothes'),
-                    ),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 120,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: ListView(scrollDirection: Axis.horizontal, children: [
+                    categoryItem(
+                        'https://pngimg.com/uploads/hoodie/small/hoodie_PNG30.png',
+                        'Clothes'),
                     categoryItem(
                         'https://www.pngall.com/wp-content/uploads/2/White-Sneakers-PNG-Clipart.png',
                         'Shoes'),
@@ -188,33 +204,50 @@ class _HomeScreenState extends State<HomeScreen> {
                     categoryItem(
                         'https://pngimg.com/uploads/headphones/headphones_PNG7645.png',
                         'Electronics'),
-                  ],
+                  ]),
                 ),
               ),
-              Container(
-                //Our products title
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(
-                    bottom: 5, left: 10, right: 10, top: 20),
-                child: const Text(
-                  'Our products',
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
-                  textAlign: TextAlign.start,
+              SliverToBoxAdapter(
+                child: Container(
+                  //Our products title
+                  padding:
+                      const EdgeInsets.only(bottom: 5, left: 10, right: 10),
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Our products',
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.start,
+                  ),
                 ),
               ),
               // All Products list
-              Expanded(
-                child: GridView.count(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  childAspectRatio: 9 / 15.5,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 15,
-                  shrinkWrap: true,
-                  children: List.generate(
-                      items.length, (index) => shoppingItem(items[index])),
-                ),
+              // Expanded(
+              //   child: GridView.count(
+              //     padding:
+              //         const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              //     childAspectRatio: 9 / 15.5,
+              //     crossAxisCount: 2,
+              //     crossAxisSpacing: 10,
+              //     mainAxisSpacing: 15,
+              //     shrinkWrap: true,
+              //     children: List.generate(
+              //         items.length, (index) => shoppingItem(items[index])),
+              //   ),
+              // )
+              SliverPadding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                sliver: SliverGrid(
+                    delegate: SliverChildListDelegate(
+                      List.generate(
+                          items.length, (index) => shoppingItem(items[index])),
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 9 / 15.5,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10)),
               )
             ]),
       ),
