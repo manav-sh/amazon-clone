@@ -1,14 +1,21 @@
+import 'package:amazon_clone/models/productinfo.dart';
+import 'package:amazon_clone/utilities/loading.dart';
 import 'package:flutter/material.dart';
 
 class ProductInfo extends StatelessWidget {
-  const ProductInfo({super.key});
+  const ProductInfo({super.key, required this.id, required this.info});
+  final String id;
+  final ProductDetails info;
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF10A8AD),
         title: const Text('Product Info'),
+        elevation: 0,
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(
@@ -25,40 +32,95 @@ class ProductInfo extends StatelessWidget {
             ],
           ),
         ),
+        info.image == ""
+            ? Loading.image(width, width)
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  info.image,
+                  height: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return Loading.image(width, width);
+                  },
+                ),
+              ),
+        const SizedBox(
+          height: 10,
+        ),
         Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              'https://img.giznext.com/assets/model/2/11245/apple-iphone-13-86392669469042bb60d485f764c68d.jpg',
-              height: 400,
-              width: 400,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
-                    ),
-                    height: 400,
-                    width: 400,
-                    child: Center(
-                        child: Icon(
-                      Icons.image,
-                      color: Colors.grey[800],
-                    )));
-              },
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              info.name,
+              style: const TextStyle(
+                  fontSize: 18,
+                  color: Color.fromARGB(255, 71, 71, 71),
+                  fontWeight: FontWeight.w500),
             ),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: Text('\$1000.00'),
-        ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              '\$${info.discountPrice}',
+              style: const TextStyle(
+                  color: Color(0xFF2c2c2c),
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                Text(
+                  '\$${info.actualPrice}',
+                  style: const TextStyle(
+                      decoration: TextDecoration.lineThrough, fontSize: 15),
+                ),
+                Text(
+                  '  ${info.discount}% off',
+                  style: const TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: const [
+                Icon(
+                  Icons.star_rounded,
+                  color: Color.fromARGB(255, 247, 173, 37),
+                ),
+                Icon(
+                  Icons.star_rounded,
+                  color: Color.fromARGB(255, 247, 173, 37),
+                ),
+                Icon(
+                  Icons.star_rounded,
+                  color: Color.fromARGB(255, 247, 173, 37),
+                ),
+                Icon(
+                  Icons.star_rounded,
+                  color: Color.fromARGB(255, 247, 173, 37),
+                ),
+                Icon(
+                  Icons.star_half_rounded,
+                  color: Color.fromARGB(255, 247, 173, 37),
+                ),
+              ],
+            )
+          ]),
+        )
       ]),
     );
   }

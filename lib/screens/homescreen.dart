@@ -1,4 +1,5 @@
 import 'package:amazon_clone/models/productinfo.dart';
+import 'package:amazon_clone/utilities/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -69,24 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget imageLoading() {
-    return Container(
-      height: 180,
-      width: 180,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.grey[100],
-      ),
-      child: Center(
-        child: Icon(Icons.image, color: Colors.grey[700], size: 35),
-      ),
-    );
-  }
-
   Widget shoppingItem(ProductDetails item) {
     return InkWell(
       onTap: () {
-        context.push('/info');
+        context.push('/info/${item.id}', extra: item);
       },
       child: Container(
         padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5, top: 8),
@@ -97,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.max,
             children: [
               item.image == ""
-                  ? imageLoading()
+                  ? Loading.image(180, 180)
                   : Image.network(
                       item.image,
                       height: 180,
@@ -108,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (loadingProgress == null) {
                           return child;
                         }
-                        return imageLoading();
+                        return Loading.image(180, 180);
                       },
                     ),
               const SizedBox(
