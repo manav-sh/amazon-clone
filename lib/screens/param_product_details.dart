@@ -1,13 +1,9 @@
-import 'package:amazon_clone/models/productinfo.dart';
 import 'package:amazon_clone/utilities/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-class ProductInfo extends StatelessWidget {
-  const ProductInfo({super.key, required this.id, required this.info});
+class ParamProductInfo extends StatelessWidget {
+  const ParamProductInfo({super.key, required this.id});
   final String id;
-  final ProductDetails info;
-
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -33,23 +29,21 @@ class ProductInfo extends StatelessWidget {
             ],
           ),
         ),
-        info.image == ""
-            ? Loading.image(width, width)
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  info.image,
-                  height: MediaQuery.of(context).size.width,
-                  width: MediaQuery.of(context).size.width,
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return Loading.image(width, width);
-                  },
-                ),
-              ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.network(
+            'https://media.croma.com/image/upload/v1662703653/Croma%20Assets/Communication/Mobiles/Images/261933_eiuolg.png',
+            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+              return Loading.image(width, width);
+            },
+          ),
+        ),
         const SizedBox(
           height: 10,
         ),
@@ -58,7 +52,7 @@ class ProductInfo extends StatelessWidget {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              info.name,
+              id,
               style: const TextStyle(
                   fontSize: 18,
                   color: Color.fromARGB(255, 71, 71, 71),
@@ -67,9 +61,9 @@ class ProductInfo extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Text(
-              '\$${info.discountPrice}',
-              style: const TextStyle(
+            const Text(
+              '\$1040.0',
+              style: TextStyle(
                   color: Color(0xFF2c2c2c),
                   fontSize: 22,
                   fontWeight: FontWeight.w600),
@@ -78,15 +72,15 @@ class ProductInfo extends StatelessWidget {
               height: 6,
             ),
             Row(
-              children: [
+              children: const [
                 Text(
-                  '\$${info.actualPrice}',
-                  style: const TextStyle(
+                  '\$1300',
+                  style: TextStyle(
                       decoration: TextDecoration.lineThrough, fontSize: 15),
                 ),
                 Text(
-                  '  ${info.discount}% off',
-                  style: const TextStyle(
+                  '20% off',
+                  style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.w500,
                       fontSize: 15),
@@ -119,23 +113,7 @@ class ProductInfo extends StatelessWidget {
                   color: Color.fromARGB(255, 247, 173, 37),
                 ),
               ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            // ElevatedButton(
-            //     onPressed: () {
-            //       context.go('/settings');
-            //     },
-            //     child: const Text('Go to Settings')),
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            // ElevatedButton(
-            //     onPressed: () {
-            //       context.push('/settings');
-            //     },
-            //     child: const Text('Push to Settings')),
+            )
           ]),
         )
       ]),

@@ -69,11 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+  // context.go('/sInfo');
+  // context.go('/pInfo/${item.id}');
+  // context.go('/pInfo/anyvalue');
 
   Widget shoppingItem(ProductDetails item) {
     return InkWell(
       onTap: () {
-        context.push('/info/${item.id}', extra: item);
+        context.goNamed('info', params: {'id': item.id}, extra: item);
       },
       child: Container(
         padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5, top: 8),
@@ -195,6 +198,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SliverToBoxAdapter(
+                child: ElevatedButton(
+                    onPressed: () {
+                      context.go('/settings');
+                    },
+                    child: const Text('Go to Settings')),
+              ),
+              SliverToBoxAdapter(
                 child: Container(
                   //Our products title
                   padding:
@@ -207,20 +217,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              // All Products list
-              // Expanded(
-              //   child: GridView.count(
-              //     padding:
-              //         const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              //     childAspectRatio: 9 / 15.5,
-              //     crossAxisCount: 2,
-              //     crossAxisSpacing: 10,
-              //     mainAxisSpacing: 15,
-              //     shrinkWrap: true,
-              //     children: List.generate(
-              //         items.length, (index) => shoppingItem(items[index])),
-              //   ),
-              // )
               SliverPadding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
